@@ -46,6 +46,9 @@ jobs:
             rm -rf /var/www/auth-service
             mkdir /var/www/auth-service
 
+      - name: ls
+        run: ls
+
       - name: Transfer application to server
         uses: appleboy/scp-action@master
         with:
@@ -53,9 +56,17 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
-          source: |
-            dist/
-            node_modules/
+          source: dist
+          target: /var/www/auth-service
+
+      - name: Transfer dependencies to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: node_modules
           target: /var/www/auth-service
 
       - name: Deploy and start application
