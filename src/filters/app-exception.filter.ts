@@ -10,7 +10,7 @@ export class AppExceptionFilter implements ExceptionFilter {
     console.error(exception);
 
     response.status(500).json({
-      message: 'Bad request',
+      message: 'Some server error',
     });
   }
 }
