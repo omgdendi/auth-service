@@ -34,6 +34,10 @@ jobs:
           envkey_EMAIL_USER: ${{ secrets.EMAIL_USER }}
           envkey_EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
           envkey_EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          envkey_REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          envkey_REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          envkey_REDIS_USER: ${{ secrets.REDIS_USER }}
+          envkey_REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
           directory: dist
           file_name: .env
           fail_on_empty: true
