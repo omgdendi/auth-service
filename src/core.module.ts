@@ -1,6 +1,7 @@
-import { CacheModule, Global, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { CacheModule, CacheStore, Global, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { redisStore } from 'cache-manager-redis-store';
 
 @Global()
 @Module({
@@ -10,9 +11,20 @@ import { JwtModule } from '@nestjs/jwt';
       isGlobal: true,
     }),
     JwtModule.register({}),
-    CacheModule.register({
+    CacheModule.registerAsync({
       isGlobal: true,
-      ttl: 1000 * 60 * 15,
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        ttl: 1000,
+        store: (await redisStore({
+          url: `redis://${configService.get('REDIS_HOST')}:${configService.get(
+            'REDIS_PORT',
+          )}`,
+          username: configService.get('REDIS_USER'),
+          password: configService.get('REDIS_PASSWORD'),
+        })) as unknown as CacheStore,
+      }),
+      inject: [ConfigService],
     }),
   ],
   exports: [ConfigModule, JwtModule, CacheModule],
