@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { zodUuid } from '../../utils/zod-schemes.util';
+import { zodToOpenAPI } from 'nestjs-zod';
 
 export const userSchema = z.object({
   id: zodUuid,
@@ -13,6 +14,11 @@ export const userApiExample = {
   firstname: 'Ivan',
   lastname: 'Ivanov',
   email: 'test@test.com',
+};
+
+export const userApi = {
+  ...zodToOpenAPI(userSchema),
+  example: userApiExample,
 };
 
 export type FindUserType = z.infer<typeof userSchema>;
