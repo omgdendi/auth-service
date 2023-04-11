@@ -6,6 +6,7 @@ import { CodeService } from './code.service';
 import { User } from '../../users/interfaces/user.interface';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { MailService } from '../../../shared/mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,7 @@ export class AuthService {
     private readonly codeService: CodeService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly mailService: MailService,
   ) {}
 
   async requestReg(user: SignUpDto) {
@@ -127,7 +129,10 @@ export class AuthService {
   }
 
   private async sendCode(email: string, code: string) {
-    console.log(email, code);
+    this.mailService
+      .sendMail(email, 'CODE', code, '')
+      .then(() => console.log('Mail sent'))
+      .catch(() => console.log("Mail didn't send"));
   }
 
   private async createUser(userDto: SignUpDto, key: string, userAgent: string) {

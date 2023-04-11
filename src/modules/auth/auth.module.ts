@@ -5,9 +5,10 @@ import { CodeService } from './services/code.service';
 import { UsersModule } from '../users/users.module';
 import { AccessJwtStrategy } from './strategies/access-jwt.strategy';
 import { RefreshJwtStrategy } from './strategies/refresh-jwt.strategy';
+import { MailModule } from '../../shared/mail/mail.module';
 
 @Module({
-  imports: [UsersModule],
+  imports: [UsersModule, MailModule],
   providers: [
     AuthService,
     CodeService,

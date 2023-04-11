@@ -1,7 +1,6 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { v4 } from 'uuid';
-import { User } from '../../users/interfaces/user.interface';
 import { SignUpDto } from '../dtos/signup.dto';
 import { CachedAuth, CachedReg } from '../types/caсhe.type';
 @Injectable()
@@ -57,7 +56,6 @@ export class CodeService {
   }
 
   private generateCode() {
-    return '7777';
     let code = '';
     for (let i = 0; i < 4; i++) {
       code += Math.floor(Math.random() * 10);

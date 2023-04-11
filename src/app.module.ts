@@ -9,6 +9,7 @@ import { AppExceptionFilter } from './filters/app-exception.filter';
 import { SchemaValidationPipe } from './pipes/schema-validation.pipe';
 import { PassportModule } from '@nestjs/passport';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { MailModule } from './shared/mail/mail.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     AuthModule,
     UsersModule,
+    MailModule,
   ],
   providers: [
     {

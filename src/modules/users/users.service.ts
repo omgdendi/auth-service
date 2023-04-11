@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { FindUserType } from './user.schema';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
@@ -6,7 +6,6 @@ import { TokenEntity } from './entities/token.entity';
 import { Repository } from 'typeorm';
 import { CreateUserType } from './dtos/create-user.dto';
 import * as argon2 from 'argon2';
-import { UserExceptions } from './users.exceptions';
 import { User } from './interfaces/user.interface';
 
 @Injectable()

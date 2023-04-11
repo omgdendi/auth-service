@@ -29,6 +29,11 @@ jobs:
           envkey_DB_USERNAME: ${{ secrets.DB_USERNAME }}
           envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           envkey_DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          envkey_JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
+          envkey_JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+          envkey_EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          envkey_EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          envkey_EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
           directory: dist
           file_name: .env
           fail_on_empty: true
