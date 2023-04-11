@@ -31,6 +31,7 @@ export class AuthController {
   @ApiOperation({
     summary:
       'Request registration and send a confirmation code to the selected email',
+    description: 'return session key for confirm',
   })
   @ApiBody({ schema: signUpApi })
   @ApiCreatedResponse({ schema: keyResponseApi })
@@ -46,6 +47,7 @@ export class AuthController {
   @ApiOperation({
     summary:
       'Request authorization and send a confirmation code to the selected email',
+    description: 'return session key for confirm',
   })
   @ApiBody({ schema: signInApi })
   @ApiCreatedResponse({ schema: keyResponseApi })
@@ -61,6 +63,7 @@ export class AuthController {
   @ApiOperation({
     summary:
       'Check the validity of the confirmation code and take the appropriate action',
+    description: 'Need code from email and key from previous step',
   })
   @ApiBody({ schema: confirmCodeApi })
   @ApiCreatedResponse({ schema: tokenResponseApi })
@@ -80,6 +83,7 @@ export class AuthController {
   @Post('refresh')
   @ApiOperation({
     summary: 'Refresh tokens',
+    description: 'Need refresh token in Authorization header',
   })
   @ApiBearerAuth()
   @ApiCreatedResponse({ schema: tokenResponseApi })
@@ -98,6 +102,7 @@ export class AuthController {
   @Post('logout')
   @ApiOperation({
     summary: 'Logout',
+    description: 'Remove refresh token',
   })
   @ApiBearerAuth()
   async logout(@Req() req) {

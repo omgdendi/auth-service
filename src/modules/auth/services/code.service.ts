@@ -29,7 +29,6 @@ export class CodeService {
   async generateAuthCache(id: string, email: string) {
     const key = this.generateKey();
     const code = this.generateCode();
-    console.log(`AUTH_${key}`);
     await this.cacheManager.set(
       `AUTH_${key}`,
       {
