@@ -1,5 +1,6 @@
-import { Global, Module } from '@nestjs/common';
+import { CacheModule, Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 @Global()
 @Module({
@@ -8,7 +9,12 @@ import { ConfigModule } from '@nestjs/config';
       load: [],
       isGlobal: true,
     }),
+    JwtModule.register({}),
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 1000 * 60 * 15,
+    }),
   ],
-  exports: [ConfigModule],
+  exports: [ConfigModule, JwtModule, CacheModule],
 })
 export class CoreModule {}
