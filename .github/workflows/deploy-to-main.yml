@@ -1,0 +1,65 @@
+name: Deploy Application
+on:
+  push:
+    branches: main
+    paths:
+      - '**.ts'
+      - 'package*.json'
+      - '.env'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install deps and build
+        run: |
+          npm ci
+          npm run build
+
+  deploy:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set .env
+        uses: SpicyPizza/create-envfile@v1.3
+        if: github.ref == 'refs/heads/prod'
+        with:
+          envkey_PORT: ${{ secrets.PORT }}
+          directory: dist
+          file_name: .env
+          fail_on_empty: true
+
+      - name: Deploy and start application
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            pm2 stop auth-service
+            pm2 delete auth-service
+            rm -rf /var/www/auth-service
+            mkdir /var/www/auth-service
+            scp -r dist node_modules ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/prod
+            cd /var/www/auth-service/dist
+            pm2 start --name auth-service main.js
