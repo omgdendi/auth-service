@@ -41,7 +41,6 @@ jobs:
 
       - name: Set .env
         uses: SpicyPizza/create-envfile@v1.3
-        if: github.ref == 'refs/heads/prod'
         with:
           envkey_PORT: ${{ secrets.PORT }}
           directory: dist
@@ -60,6 +59,6 @@ jobs:
             pm2 delete auth-service
             rm -rf /var/www/auth-service
             mkdir /var/www/auth-service
-            scp -r dist node_modules ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/prod
+            scp -r dist node_modules ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/var/www/auth-service
             cd /var/www/auth-service/dist
             pm2 start --name auth-service main.js
