@@ -1,5 +1,11 @@
 # Auth service
 
+Authorization service with JWT tokens
+
+See documentation:
+
+https://omgdendi.ru/api/docs
+
 ## Installation
 
 ```bash

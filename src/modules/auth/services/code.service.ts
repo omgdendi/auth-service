@@ -1,8 +1,10 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+
 import { Cache } from 'cache-manager';
 import { v4 } from 'uuid';
 import { SignUpDto } from '../dtos/signup.dto';
 import { CachedAuth, CachedReg } from '../types/caсhe.type';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 @Injectable()
 export class CodeService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
