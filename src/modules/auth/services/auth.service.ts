@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { SignUpDto } from '../dtos/signup.dto';
 import { UsersService } from '../../users/users.service';
 import { AuthExceptions } from '../auth.exceptions';
@@ -7,10 +7,13 @@ import { User } from '../../users/interfaces/user.interface';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { MailService } from '../../../shared/mail/mail.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly usersService: UsersService,
     private readonly codeService: CodeService,
     private readonly jwtService: JwtService,
@@ -121,6 +124,8 @@ export class AuthService {
       tokens.refresh_token,
     );
 
+    await this.cacheUser(user);
+
     return tokens;
   }
 
@@ -148,6 +153,8 @@ export class AuthService {
       tokens.refresh_token,
     );
 
+    await this.cacheUser(user);
+
     return tokens;
   }
 
@@ -169,6 +176,8 @@ export class AuthService {
       userAgent,
       tokens.refresh_token,
     );
+
+    await this.cacheUser(user);
 
     return tokens;
   }
@@ -193,5 +202,9 @@ export class AuthService {
       access_token,
       refresh_token,
     };
+  }
+
+  private async cacheUser(user: User) {
+    await this.cacheManager.set(`USER_${user.id}`, user, 30 * 60);
   }
 }
